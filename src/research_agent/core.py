@@ -70,7 +70,6 @@ class Agent:
                             "content": tool_output
                         }
                         self.messages.append(tool_message)
-                        return tool_output
             else:
                 return message.content
 
