@@ -38,7 +38,7 @@ class Agent:
         while True:
             if loop_count >= MAX_LOOPS:
                 return "I searched multiple times but couldn't find a clear answer. Please refine your question."
-                
+
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=self.messages,
@@ -70,6 +70,7 @@ class Agent:
                             "content": tool_output
                         }
                         self.messages.append(tool_message)
+                        return tool_output
             else:
                 return message.content
 
