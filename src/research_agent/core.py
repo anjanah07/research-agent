@@ -2,7 +2,6 @@ from typing import cast
 import json
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam, ChatCompletionToolParam, ChatCompletionMessageToolCall, ChatCompletionToolMessageParam
-from rich.console import Console
 from research_agent.tools import AVAILABLE_TOOLS
 
 class Agent:
@@ -49,15 +48,12 @@ class Agent:
             self.messages.append(cast(ChatCompletionMessageParam, message.model_dump(exclude_none=True))) 
             
             if message.tool_calls:
-                console = Console()
-                console.print(f"[bold yellow]Agent decided to use tools ... [/bold yellow]")
 
                 for tool_call in message.tool_calls:
                     if isinstance(tool_call, ChatCompletionMessageToolCall):
                         func_name = tool_call.function.name
                         func_args = json.loads(tool_call.function.arguments)
 
-                        console.print(f"[cyan]Executing: {func_name}({func_args})[/cyan]")
             
                         if func_name in AVAILABLE_TOOLS:
                             tool_output = AVAILABLE_TOOLS[func_name](**func_args)
